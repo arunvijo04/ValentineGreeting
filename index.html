@@ -3,21 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>💖 Secret Valentine 💖</title>
+    <title>💌 Secret Valentine 💌</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
             text-align: center;
-            background: linear-gradient(to bottom right, #ff758c, #ff7eb3);
-            color: white;
+            background: linear-gradient(45deg, #ff9a9e, #fad0c4);
+            color: #fff;
             padding: 50px;
+            animation: fadeIn 2s ease-in-out;
         }
         h1 {
             font-size: 36px;
-            animation: fadeIn 2s ease-in-out;
+            margin-bottom: 20px;
         }
         p {
-            font-size: 22px;
+            font-size: 20px;
         }
         .heart {
             font-size: 100px;
@@ -28,18 +29,42 @@
             50% { transform: scale(1.2); }
             100% { transform: scale(1); }
         }
-        .btn {
-            background: #ff4081;
+        .reveal-btn {
+            background-color: #ff4081;
             color: white;
             font-size: 20px;
-            padding: 12px 20px;
+            padding: 15px 30px;
             border: none;
             cursor: pointer;
-            border-radius: 12px;
+            margin-top: 20px;
+            border-radius: 10px;
+            transition: 0.3s;
+        }
+        .reveal-btn:hover {
+            background-color: #d63384;
+        }
+        .loading {
+            display: none;
+            font-size: 22px;
             margin-top: 20px;
         }
-        .hidden {
+        .hidden-message {
             display: none;
+            font-size: 24px;
+            color: #fff;
+            font-weight: bold;
+            margin-top: 30px;
+        }
+        .share-btn {
+            display: none;
+            background-color: #ff0055;
+            color: white;
+            font-size: 18px;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            margin-top: 20px;
+            border-radius: 10px;
         }
         @keyframes fadeIn {
             from { opacity: 0; }
@@ -49,17 +74,16 @@
 </head>
 <body>
     <h1>💌 Secret Valentine for <span id="userName">You</span>! 💌</h1>
-    <p>Someone **special** has a **secret crush** on you! 🥰</p>
-    <p>Click below to reveal your admirer! 👀</p>
+    <p>Someone has a **secret crush** on you! 🥰</p>
+    <p>Click below to reveal who it is...</p>
 
     <div class="heart">💖</div>
 
-    <button class="btn" onclick="revealSecret()">💘 Reveal Your Secret Admirer 💘</button>
+    <button class="reveal-btn" onclick="startLoading()">❤️ Reveal Your Admirer</button>
 
-    <p id="revealMessage" class="hidden">😂 **Oops! It’s Just Me – Your Best Friend!** 😂  
-    **Now share this with your friends and trick them!** 😆</p>
-
-    <button class="btn hidden" id="shareBtn" onclick="shareOnWhatsApp()">📩 Share This Prank on WhatsApp</button>
+    <p class="loading">🔍 Searching for your secret admirer...</p>
+    <p class="hidden-message"></p>
+    <button class="share-btn" onclick="shareOnWhatsApp()">📩 Send This to Others</button>
 
     <script>
         function getQueryParam(param) {
@@ -72,14 +96,21 @@
             document.getElementById("userName").innerText = name;
         }
 
-        function revealSecret() {
-            document.querySelector(".heart").innerText = "😂";
-            document.getElementById("revealMessage").classList.remove("hidden");
-            document.getElementById("shareBtn").classList.remove("hidden");
+        function startLoading() {
+            document.querySelector(".reveal-btn").style.display = "none";
+            document.querySelector(".loading").style.display = "block";
+
+            setTimeout(() => {
+                document.querySelector(".loading").style.display = "none";
+                let message = document.querySelector(".hidden-message");
+                message.innerHTML = "😂 Haha! You just got pranked! 😆 Your real secret admirer is... <b>someone special</b> 💖";
+                message.style.display = "block";
+                document.querySelector(".share-btn").style.display = "block";
+            }, 3000);
         }
 
         function shareOnWhatsApp() {
-            let prankMessage = `😂 Oops! I got tricked into thinking I had a secret admirer! Now it’s your turn! Click here: ` + window.location.href;
+            let prankMessage = `💖 OMG! I just found out my secret Valentine! 😂 You HAVE to try this! 👉 ` + window.location.href;
             let whatsappUrl = "https://api.whatsapp.com/send?text=" + encodeURIComponent(prankMessage);
             window.location.href = whatsappUrl;
         }

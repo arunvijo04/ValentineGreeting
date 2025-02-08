@@ -3,68 +3,72 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>💌 Secret Valentine 💌</title>
+    <title>💖 Secret Valentine 💖</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
             text-align: center;
-            background: linear-gradient(45deg, #ff9a9e, #fad0c4);
-            color: #fff;
-            padding: 50px;
-            animation: fadeIn 2s ease-in-out;
+            background: linear-gradient(to bottom right, #ff4e50, #fc913a);
+            color: white;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
         }
         h1 {
-            font-size: 36px;
-            margin-bottom: 20px;
+            font-size: 32px;
+            margin-bottom: 15px;
+            animation: fadeIn 2s ease-in-out;
         }
         p {
             font-size: 20px;
+            max-width: 80%;
+            line-height: 1.5;
         }
         .heart {
-            font-size: 100px;
+            font-size: 90px;
+            margin: 20px 0;
             animation: heartbeat 1s infinite;
         }
         @keyframes heartbeat {
             0% { transform: scale(1); }
-            50% { transform: scale(1.2); }
+            50% { transform: scale(1.3); }
             100% { transform: scale(1); }
         }
-        .reveal-btn {
-            background-color: #ff4081;
-            color: white;
-            font-size: 20px;
-            padding: 15px 30px;
-            border: none;
-            cursor: pointer;
-            margin-top: 20px;
-            border-radius: 10px;
-            transition: 0.3s;
-        }
-        .reveal-btn:hover {
-            background-color: #d63384;
-        }
-        .loading {
-            display: none;
-            font-size: 22px;
-            margin-top: 20px;
-        }
-        .hidden-message {
-            display: none;
-            font-size: 24px;
-            color: #fff;
-            font-weight: bold;
-            margin-top: 30px;
-        }
-        .share-btn {
-            display: none;
-            background-color: #ff0055;
+        .btn {
+            background: #ff0266;
             color: white;
             font-size: 18px;
-            padding: 10px 20px;
+            padding: 12px 20px;
             border: none;
             cursor: pointer;
-            margin-top: 20px;
+            border-radius: 20px;
+            margin-top: 15px;
+            transition: 0.3s;
+            width: 80%;
+            max-width: 300px;
+            text-transform: uppercase;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        }
+        .btn:hover {
+            background: #d60056;
+            transform: scale(1.05);
+        }
+        .hidden {
+            display: none;
+        }
+        input {
+            padding: 12px;
+            width: 80%;
+            max-width: 280px;
+            font-size: 18px;
             border-radius: 10px;
+            border: 2px solid #fff;
+            text-align: center;
+            margin-top: 10px;
         }
         @keyframes fadeIn {
             from { opacity: 0; }
@@ -74,16 +78,19 @@
 </head>
 <body>
     <h1>💌 Secret Valentine for <span id="userName">You</span>! 💌</h1>
-    <p>Someone has a **secret crush** on you! 🥰</p>
-    <p>Click below to reveal who it is...</p>
+    <p>Someone special has a secret crush on you! 🥰</p>
+    <p>Click below to reveal your admirer! 👀</p>
 
     <div class="heart">💖</div>
 
-    <button class="reveal-btn" onclick="startLoading()">❤️ Reveal Your Admirer</button>
+    <button class="btn" onclick="revealSecret()">💘 Reveal Your Secret Admirer 💘</button>
 
-    <p class="loading">🔍 Searching for your secret admirer...</p>
-    <p class="hidden-message"></p>
-    <button class="share-btn" onclick="shareOnWhatsApp()">📩 Send This to Others</button>
+    <p id="revealMessage" class="hidden">😂 Nink oke engne pennu kittana 😂  
+    Poii vere oruthane oombipichoo 😆</p>
+
+    <input type="text" id="nextName" placeholder="Enter friend's name..." class="hidden">
+    
+    <button class="btn hidden" id="shareBtn" onclick="shareOnWhatsApp()">📩 Share This Prank on WhatsApp</button>
 
     <script>
         function getQueryParam(param) {
@@ -96,21 +103,17 @@
             document.getElementById("userName").innerText = name;
         }
 
-        function startLoading() {
-            document.querySelector(".reveal-btn").style.display = "none";
-            document.querySelector(".loading").style.display = "block";
-
-            setTimeout(() => {
-                document.querySelector(".loading").style.display = "none";
-                let message = document.querySelector(".hidden-message");
-                message.innerHTML = "😂 Haha! You just got pranked! 😆 Your real secret admirer is... <b>someone special</b> 💖";
-                message.style.display = "block";
-                document.querySelector(".share-btn").style.display = "block";
-            }, 3000);
+        function revealSecret() {
+            document.querySelector(".heart").innerText = "😂";
+            document.getElementById("revealMessage").classList.remove("hidden");
+            document.getElementById("nextName").classList.remove("hidden");
+            document.getElementById("shareBtn").classList.remove("hidden");
         }
 
         function shareOnWhatsApp() {
-            let prankMessage = `💖 OMG! I just found out my secret Valentine! 😂 You HAVE to try this! 👉 ` + window.location.href;
+            let friendName = document.getElementById("nextName").value || "Your Friend";
+            let prankMessage = `💌 Hey ${friendName}, you just got a secret Valentine’s message! 😍\n\n🔒 Someone has a **crush** on you… Click below to reveal your admirer: 👉 ` + window.location.origin + window.location.pathname + `?name=${encodeURIComponent(friendName)}`;
+            
             let whatsappUrl = "https://api.whatsapp.com/send?text=" + encodeURIComponent(prankMessage);
             window.location.href = whatsappUrl;
         }
